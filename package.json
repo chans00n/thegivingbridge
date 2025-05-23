@@ -24,7 +24,7 @@
   },
   "lint-staged": {
     "frontend/**/*.{js,jsx,ts,tsx}": [
-      "npm run lint --prefix frontend",
+      "cd frontend && npm run lint -- --file",
       "npm run format --prefix frontend"
     ],
     "backend/**/*.js": [

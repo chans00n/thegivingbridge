@@ -213,6 +213,7 @@ export default function InterestFormPage() {
                 fieldErrors.fullName ? "fullName-error" : undefined
               }
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g., Jane Doe"
             />
             {fieldErrors.fullName && (
               <p
@@ -243,6 +244,7 @@ export default function InterestFormPage() {
               aria-required="true"
               aria-describedby={fieldErrors.email ? "email-error" : undefined}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g., jane.doe@example.com"
             />
             {fieldErrors.email && (
               <p
@@ -271,6 +273,7 @@ export default function InterestFormPage() {
               onChange={handleChange}
               aria-describedby={fieldErrors.phone ? "phone-error" : undefined}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g., (555) 123-4567"
             />
             {fieldErrors.phone && (
               <p
@@ -301,6 +304,7 @@ export default function InterestFormPage() {
                 fieldErrors.address ? "address-error" : undefined
               }
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g., 123 Main St, Anytown, USA 12345"
             />
             {fieldErrors.address && (
               <p
@@ -331,6 +335,7 @@ export default function InterestFormPage() {
                 fieldErrors.referrer ? "referrer-error" : undefined
               }
               className="mt-1 block w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g., John Smith"
             />
             {fieldErrors.referrer && (
               <p
