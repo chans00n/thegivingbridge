@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,16 +12,34 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { ThemeToggleButton } from "./theme-toggle-button";
 
 export const Header = () => {
   const appName = process.env.NEXT_PUBLIC_APP_NAME || "FundRaiser";
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [logoSrc, setLogoSrc] = useState("/images/tgb-logo-light.png");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      setLogoSrc(
+        resolvedTheme === "dark"
+          ? "/images/tgb-logo-dark.png"
+          : "/images/tgb-logo-light.png",
+      );
+    }
+  }, [resolvedTheme, mounted]);
 
   return (
     <header className="bg-background border-b sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center">
           <Image
-            src="/images/tgb-logo-light.png"
+            src={logoSrc}
             alt={`${appName} logo`}
             width={160}
             height={64}
@@ -35,6 +55,7 @@ export const Header = () => {
             <Button variant="default" size="sm" asChild>
               <Link href="/interest-form">Join Us</Link>
             </Button>
+            <ThemeToggleButton />
           </div>
 
           {/* Mobile Menu */}
@@ -71,6 +92,9 @@ export const Header = () => {
                     <Button variant="default" asChild className="w-full">
                       <Link href="/interest-form">Join Us</Link>
                     </Button>
+                    <div className="pt-2">
+                      <ThemeToggleButton />
+                    </div>
                   </div>
                 </div>
               </SheetContent>
