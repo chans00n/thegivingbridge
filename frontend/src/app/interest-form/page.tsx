@@ -377,7 +377,8 @@ export default function InterestFormPage() {
                     <span className="ml-3 block text-sm text-gray-800 dark:text-neutral-200">
                       <strong className="font-medium">Fundraiser</strong>
                       <span className="block text-xs text-gray-500 dark:text-neutral-400">
-                        Find 30 Donors in 30 Days
+                        Create your personal fundraising page and establish your
+                        own bridge of support.
                       </span>
                     </span>
                   </label>
@@ -400,7 +401,9 @@ export default function InterestFormPage() {
                     <span className="ml-3 block text-sm text-gray-800 dark:text-neutral-200">
                       <strong className="font-medium">Team Captain</strong>
                       <span className="block text-xs text-gray-500 dark:text-neutral-400">
-                        Build a team of fundraisers and win prizes
+                        Become a Team Captain and create stronger support beams
+                        by inviting family, friends and colleagues to fundraise
+                        alongside you.
                       </span>
                     </span>
                   </label>
