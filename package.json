@@ -1,0 +1,35 @@
+{
+  "name": "thephoenix",
+  "version": "1.0.0",
+  "description": "This project is a custom peer-to-peer fundraising web application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "lucide-react": "^0.511.0",
+    "nodemailer": "^7.0.3",
+    "react-google-places-autocomplete": "^4.1.0",
+    "task-master-ai": "^0.13.2"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.10"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint --prefix frontend",
+      "npm run format --prefix frontend"
+    ],
+    "backend/**/*.js": [
+      "npm run lint --prefix backend",
+      "npm run format --prefix backend"
+    ]
+  }
+}

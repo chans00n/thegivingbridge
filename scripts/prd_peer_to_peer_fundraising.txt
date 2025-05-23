@@ -1,0 +1,235 @@
+# Product Requirements Document: Custom Peer-to-Peer Fundraising Platform
+
+## 1. Overview
+**Product Name:** [User to Define - e.g., "ConnectRaise", "AmplifyGiving"]
+
+**High-Level Overview:**
+This project aims to develop a custom, modern web application for peer-to-peer fundraising. The platform will empower individuals and teams to create and manage personalized fundraising pages for various causes or campaigns. It will leverage the Classy.org API for core backend functionalities such as user data management, secure transaction processing, and campaign data. The primary value lies in providing a fully branded, engaging, and seamless user experience for both fundraisers and donors, distinguishing it from generic fundraising platforms.
+
+**Problem Solved:**
+Many organizations and individuals require a peer-to-peer fundraising solution that offers more than a one-size-fits-all approach. They need a platform that aligns with their brand identity, provides a tailored user journey, and integrates smoothly with robust fundraising backend services like Classy.org. This platform will solve the need for a customizable, user-friendly, and effective online fundraising tool.
+
+**Target Audience:**
+-   Non-profit organizations seeking a branded fundraising solution.
+-   Community groups and clubs running fundraising events.
+-   Individuals or teams passionate about raising money for specific causes.
+-   Donors looking for a simple, secure, and engaging way to support campaigns.
+-   Campaign administrators needing tools to manage and track fundraising efforts.
+
+**Value Proposition:**
+-   **Full Customization & Branding:** Complete control over UI/UX to match organizational branding and create a unique donor/fundraiser experience.
+-   **Robust Backend:** Reliable and secure data handling, transaction processing, and user management powered by the Classy.org API.
+-   **Enhanced Engagement:** Features designed to motivate fundraisers and connect donors more deeply with causes.
+-   **Streamlined Operations:** Simplified campaign setup, management, and reporting for administrators.
+
+## 2. Core Features
+
+**2.1. User Authentication & Profile Management (via Classy API)**
+    -   **What it does:** Allows users (fundraisers, donors, admins) to register, log in, and manage their profiles using Classy.org's OAuth2 authentication.
+    -   **Why it's important:** Ensures secure access, centralizes user data within Classy, and simplifies user management.
+    -   **How it works:** Frontend initiates OAuth2 flow with Classy. Backend handles token exchange and manages user sessions. User profile information is fetched from and updated to Classy.
+
+**2.2. Campaign Discovery & Browsing**
+    -   **What it does:** Allows users to browse and search for active fundraising campaigns.
+    -   **Why it's important:** Facilitates donor engagement and helps users find campaigns they wish to support or join.
+    -   **How it works:** Frontend displays a list/grid of campaigns fetched from the Classy API, with search and filtering capabilities.
+
+**2.3. Individual & Team Fundraising Page Creation & Management**
+    -   **What it does:** Enables authenticated users to create personal fundraising pages or form/join fundraising teams for a specific campaign. Users can set goals, write personal appeals, upload images/videos, and customize their page.
+    -   **Why it's important:** Empowers individuals to become advocates for a cause, leveraging their personal networks to raise funds. Team functionality encourages collaborative fundraising.
+    -   **How it works:** Users select a campaign, then choose to create an individual page or a team page. Forms allow input for page title, story, goal, and media. Data is saved via the Classy API. Team captains can manage team members and settings.
+
+**2.4. Donation Processing (via Classy API)**
+    -   **What it does:** Provides a secure and user-friendly interface for donors to make one-time or recurring donations to fundraising pages or campaigns.
+    -   **Why it's important:** Core functionality for collecting funds. Reliability and security are paramount.
+    -   **How it works:** Custom frontend donation forms collect donor information and payment details. These are securely submitted to the Classy API for processing. The platform handles success/failure responses and updates donation totals.
+
+**2.5. Fundraiser & Donor Dashboards**
+    -   **What it does:** Provides personalized dashboards for authenticated users. Fundraisers can track their progress, manage their page, view donor lists, and send thank-you messages. Donors can view their donation history and manage recurring gifts.
+    -   **Why it's important:** Offers users a central place to manage their activities and stay informed, enhancing engagement.
+    -   **How it works:** Dashboards display data fetched from the Classy API, tailored to the logged-in user's role and activities.
+
+**2.6. Activity Feeds & Progress Tracking**
+    -   **What it does:** Displays real-time(ish) updates on fundraising progress, new donations, new team members, and comments on fundraising pages.
+    -   **Why it's important:** Creates a sense of momentum and community, encouraging further participation.
+    -   **How it works:** The backend will periodically poll the Classy API for new activity. Updates are then pushed to the frontend or made available for users to view on campaign/fundraising pages.
+
+**2.7. Administrative Features (for Org Admins)**
+    -   **What it does:** Allows organization administrators to oversee campaigns, manage users (within Classy's framework), view comprehensive reports, and potentially configure platform-wide settings.
+    -   **Why it's important:** Provides necessary tools for managing the overall fundraising platform and its success.
+    -   **How it works:** A separate admin interface will provide access to relevant Classy API endpoints for reporting and management, supplemented by any local data.
+
+## 3. User Experience
+
+**User Personas:**
+    -   **Sarah the Fundraiser:** A passionate individual who wants to raise money for a local animal shelter. She is moderately tech-savvy and motivated by making a personal impact. Needs an easy way to set up her page, share it with friends, and see her progress.
+    -   **David the Donor:** Wants to support his friend Sarah's campaign. He values a quick, secure, and transparent donation process. He might donate on mobile.
+    -   **Maria the Team Captain:** Organizing a corporate team for a charity run. Needs tools to invite colleagues, track team progress, and foster friendly competition.
+    -   **John the Org Admin:** Works for the animal shelter. Needs to see overall campaign performance, manage fundraiser access (if applicable through Classy roles), and pull reports for stakeholders.
+
+**Key User Flows:**
+    -   **New User Registration/Login:** User registers/logs in using Classy OAuth.
+    -   **Creating a Fundraising Page:** User selects a campaign -> chooses individual/team -> fills out page details (goal, story, image) -> publishes page.
+    -   **Making a Donation:** User lands on a fundraising page -> clicks "Donate" -> fills donation form (amount, payment info, optional dedication) -> confirms donation -> receives confirmation.
+    -   **Joining a Team:** User finds a team page -> clicks "Join Team" -> creates their individual page linked to the team.
+    -   **Viewing Progress:** Fundraiser logs into their dashboard -> sees donations received, progress towards goal, donor list.
+
+**UI/UX Considerations:**
+    -   **Branding:** UI will be fully customizable to match the client's brand (logo, colors, fonts).
+    -   **Simplicity & Intuition:** Clear navigation, straightforward forms, and minimal cognitive load.
+    -   **Mobile-First & Responsive:** Seamless experience across all devices (desktop, tablet, mobile).
+    -   **Accessibility:** Adherence to WCAG 2.1 AA guidelines.
+    -   **Engagement:** Visual progress bars, social sharing prompts, personalized thank-you messages, gamification elements (badges, leaderboards).
+    -   **Performance:** Fast load times and smooth interactions.
+    -   **Clarity:** Transparent display of fees (if any, as handled by Classy) and how donations are used.
+
+## 4. Technical Architecture
+
+**System Components:**
+    -   **Frontend:** Single Page Application (SPA) handling all user interface and interactions.
+        -   *Technology*: React (with Next.js for SSR/SSG if beneficial) or Vue.js.
+    -   **Backend API Server:** Custom API to act as an intermediary between the frontend and the Classy API, handle business logic not covered by Classy, and manage the polling mechanism for updates.
+        -   *Technology*: Node.js (with Express.js or Fastify) or Python (with FastAPI or Django).
+    -   **Classy.org API:** Serves as the primary backend for data storage (users, campaigns, donations, teams), transaction processing, and authentication.
+    -   **Database (Optional Local DB):** For caching data from Classy, storing application-specific settings, or managing data for the custom webhook/polling system (e.g., last polled timestamps, processed event IDs).
+        -   *Technology*: PostgreSQL or MongoDB.
+    -   **Background Job Processor:** To handle periodic polling of the Classy API.
+        -   *Technology*: BullMQ (Node.js), Celery (Python), or cron jobs.
+
+**Data Models (Primarily managed by Classy, accessed via API):**
+    -   Users (Fundraisers, Donors, Admins)
+    -   Campaigns
+    -   Fundraising Pages (Individual)
+    -   Fundraising Teams
+    -   Donations (Transactions, Recurring Plans)
+    -   Dedications, Comments
+    -   *Local data models might include:* Application settings, cached API responses, webhook subscription details.
+
+**APIs and Integrations:**
+    -   **Classy API (v2):** Primary integration for all core fundraising operations. All interactions will be authenticated via OAuth2.
+    -   **Internal API (Custom Backend):** Frontend will communicate with this API, which then orchestrates calls to the Classy API and other services if any.
+    -   **Potential Future Integrations:** Email marketing platforms (e.g., Mailchimp, SendGrid for custom notifications beyond Classy's), analytics (e.g., Google Analytics, Mixpanel), social media APIs for enhanced sharing.
+
+**Infrastructure Requirements:**
+    -   **Frontend Hosting:** Vercel, Netlify, AWS S3/CloudFront, or similar static/SPA hosting.
+    -   **Backend Hosting:** Heroku, AWS Elastic Beanstalk/ECS/Lambda, Google Cloud Run, DigitalOcean App Platform.
+    -   **Database Hosting (if used):** Managed database service (AWS RDS, Google Cloud SQL, MongoDB Atlas).
+    -   **Domain & DNS Management.**
+    -   **SSL Certificates.**
+
+## 5. Development Roadmap
+
+**Phase 1: MVP (Minimum Viable Product)**
+    -   **Core User Authentication:** Classy OAuth2 login/registration.
+    -   **Campaign Display:** Ability to view active campaigns (read-only from Classy).
+    -   **Individual Fundraising Page Creation:** Users can create a basic fundraising page linked to a campaign (title, goal, simple story).
+    -   **Donation Processing:** Secure donation flow for one-time donations via Classy API.
+    -   **Basic Fundraiser Dashboard:** View page link, total raised.
+    -   **Essential Classy API Integration:** Endpoints for auth, campaigns (read), fundraising pages (create/read), transactions (create/read).
+    -   **Simple, clean, branded UI.**
+
+**Phase 2: Core Peer-to-Peer Functionality**
+    -   **Team Fundraising:** Create teams, join teams, team pages with aggregated goals/progress.
+    -   **Enhanced Page Customization:** Image/video uploads, rich text editor for stories.
+    -   **Donor Experience:** Dedications, donor comments, option for anonymous donations.
+    -   **Recurring Donations:** Setup and management via Classy.
+    -   **Activity Feed (Polling MVP):** Basic display of recent donations on pages.
+    -   **Improved Fundraiser Dashboard:** Donor lists, basic thank-you tools.
+    -   **Basic Admin View:** View overall donation totals per campaign.
+
+**Phase 3: Engagement & Advanced Features**
+    -   **Advanced Dashboards:** More detailed analytics for fundraisers and admins.
+    -   **Notifications:** Email notifications for new donations, goal milestones (triggered by custom polling).
+    -   **Social Sharing Features:** Enhanced sharing tools, pre-populated messages.
+    -   **Gamification Elements:** Badges, leaderboards.
+    -   **Full Admin Reporting Suite:** Custom reports, data export.
+    -   **Mobile Optimization & Responsiveness Polish.**
+    -   **Accessibility Audit & Refinements.**
+
+**Future Enhancements (Post-MVP Phases):**
+    -   Integration with third-party email/SMS services for custom notifications.
+    -   Advanced analytics integrations.
+    -   Direct messaging between fundraisers and donors (if compliant).
+    -   Support for offline donation entry.
+    -   Multi-language/currency support.
+
+## 6. Logical Dependency Chain
+
+1.  **Foundation & Classy Integration Setup:**
+    *   Establish secure OAuth2 authentication flow with Classy.
+    *   Implement core API service layer in the backend to interact with Classy for reading campaign data and processing basic user authentication.
+    *   Setup basic project structure for frontend and backend.
+2.  **Campaign Display & User Login (Visible Frontend - Read-Only):**
+    *   Frontend ability to fetch and display a list of active campaigns from Classy.
+    *   Frontend user login/logout functionality using the Classy OAuth flow.
+3.  **Individual Fundraising Page Creation & Basic Donation (Core Loop):**
+    *   Backend and frontend logic for creating a new individual fundraising page via Classy API.
+    *   Frontend donation form that securely processes one-time donations through the Classy API.
+    *   Display of basic fundraising page with title, goal, and amount raised.
+4.  **Basic Fundraiser Dashboard:**
+    *   Logged-in fundraisers can see a list of their pages and the total amount raised for each.
+5.  **Team Functionality:**
+    *   Build upon individual page creation to allow team creation and joining.
+    *   Team pages displaying aggregated progress and member lists.
+6.  **Enhanced Page Customization & Donor Experience:**
+    *   Allow fundraisers to add more content (images, detailed stories) to their pages.
+    *   Implement features like dedications and donor comments during the donation flow.
+7.  **Recurring Donations:**
+    *   Integrate Classy's recurring donation capabilities into the donation flow.
+8.  **Activity Feed & Notifications (Polling Based):**
+    *   Develop backend polling mechanism to fetch recent activities from Classy.
+    *   Implement frontend display for activity feeds.
+    *   Basic email notifications for key events.
+9.  **Admin Features & Reporting:**
+    *   Develop admin dashboard and reporting functionalities.
+10. **Gamification & Advanced Engagement:**
+    *   Implement leaderboards, badges, and other engagement features.
+11. **Continuous Refinement:** UI/UX polish, performance optimization, accessibility improvements based on feedback.
+
+## 7. Risks and Mitigations
+
+**Technical Challenges:**
+    -   **Risk:** Complexity in managing OAuth2 tokens and user sessions securely and reliably with Classy.
+    -   **Mitigation:** Thoroughly study Classy API documentation on authentication. Use well-tested OAuth2 libraries. Implement robust error handling and token refresh mechanisms.
+    -   **Risk:** Limitations or unexpected behavior in the Classy API.
+    -   **Mitigation:** Allocate time for API exploration and testing early in the project. Maintain open communication with Classy support if issues arise. Design flexibly to accommodate potential API constraints.
+    -   **Risk:** Implementing an efficient and scalable polling mechanism for near real-time updates without hitting Classy API rate limits.
+    -   **Mitigation:** Design polling strategy carefully (e.g., adaptive polling intervals, polling only necessary data). Implement robust error handling for rate limits. Explore batching requests if possible. Clearly communicate that updates are "near real-time."
+
+**Figuring out the MVP that we can build upon:**
+    -   **Risk:** Scope creep leading to an overly complex MVP that delays launch and learning.
+    -   **Mitigation:** Strictly adhere to the defined MVP features. Prioritize core functionality that delivers immediate value (user auth, page creation, donation). Gather user feedback early and often to inform subsequent phases.
+
+**UX Complexity:**
+    -   **Risk:** Designing a UI that is both highly customizable/branded and intuitive for all user types.
+    -   **Mitigation:** Invest in UX research and design upfront. Create detailed wireframes and prototypes. Conduct usability testing with target users throughout the development process.
+
+**Resource Constraints (if applicable):**
+    -   **Risk:** Limited development resources impacting timeline or feature set.
+    -   **Mitigation:** Phased development approach allows for delivering value incrementally. Prioritize features based on impact and effort. Clearly communicate any resource limitations to stakeholders.
+
+**Dependency on Classy.org:**
+    -   **Risk:** Changes in Classy API, pricing, or terms of service impacting the platform.
+    -   **Mitigation:** Stay updated with Classy communications. Design the backend with an abstraction layer for Classy API calls, potentially making it easier to adapt to changes or switch providers in the extreme future (though Classy is core to this PRD).
+
+**Security & Compliance:**
+    -   **Risk:** Ensuring all custom code and integrations meet security best practices, beyond the PCI compliance handled by Classy for payments.
+    -   **Mitigation:** Follow secure coding practices (OWASP Top 10). Conduct security reviews/testing. Ensure data privacy for any locally stored information.
+
+## 8. Appendix
+
+**Research Findings:**
+    -   Classy API (v2) documentation (link: https://developers.classy.org/api-docs/v2/) confirms availability of necessary endpoints for campaigns, fundraising pages, teams, transactions, and OAuth2 authentication.
+    -   Classy does not offer native webhooks; a custom polling mechanism is required for near real-time updates.
+    -   Movember website (inspiration) features strong visual branding, clear calls to action, and prominent progress tracking, which should be emulated.
+
+**Technical Specifications (Key Classy API Endpoints to be utilized - *examples, not exhaustive*):**
+    -   Authentication: `/oauth2/token`
+    -   Campaigns: `GET /campaigns`, `GET /campaigns/{campaignId}`
+    -   Fundraising Pages: `POST /campaigns/{campaignId}/fundraising-pages`, `GET /fundraising-pages/{pageId}`, `PUT /fundraising-pages/{pageId}`
+    -   Fundraising Teams: `POST /campaigns/{campaignId}/fundraising-teams`, `GET /fundraising-teams/{teamId}`
+    -   Transactions: `POST /transactions` (for new donations), `GET /campaigns/{campaignId}/transactions`, `GET /fundraising-pages/{pageId}/transactions`
+    -   Members (Users): `GET /me` (for authenticated user), `GET /members/{memberId}`
+
+---
+This PRD should provide a comprehensive starting point. We can refine and add more detail to any section as needed. Let me know your thoughts! 
