@@ -153,4 +153,7 @@ tasks/
 
 # Secrets and sensitive configuration files
 frontend/ecstatic-armor-273722-a53b6622103c.json
-.cursor/mcp.json 
+.cursor/mcp.json
+
+# Whitelist frontend public directory
+!frontend/public/ 
