@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, useRef } from "react";
+import { useState, ChangeEvent, FormEvent, useRef, useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useTheme } from "next-themes";
 
 interface FormData {
   fullName: string;
@@ -27,6 +28,13 @@ export default function InterestFormPage() {
   const [isVerifying, setIsVerifying] = useState(false);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -139,8 +147,10 @@ export default function InterestFormPage() {
   if (submitted) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
-        <h1 className="text-3xl font-bold text-green-600 mb-4">Thank You!</h1>
-        <p className="text-lg">
+        <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-4">
+          Thank You!
+        </h1>
+        <p className="text-lg dark:text-neutral-300">
           Your interest form has been submitted successfully. We will be in
           touch soon.
         </p>
@@ -399,14 +409,18 @@ export default function InterestFormPage() {
             <div className="flex justify-center md:justify-start">
               {/* Wrapper for scaling reCAPTCHA on small screens */}
               <div className="recaptcha-wrapper">
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                  onChange={handleRecaptchaChange}
-                  aria-describedby={
-                    fieldErrors.recaptcha ? "recaptcha-error" : undefined
-                  }
-                />
+                {mounted && (
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                    onChange={handleRecaptchaChange}
+                    theme={resolvedTheme === "dark" ? "dark" : "light"}
+                    key={resolvedTheme}
+                    aria-describedby={
+                      fieldErrors.recaptcha ? "recaptcha-error" : undefined
+                    }
+                  />
+                )}
               </div>
             </div>
             {fieldErrors.recaptcha && (
@@ -425,7 +439,7 @@ export default function InterestFormPage() {
             <button
               type="submit"
               disabled={isVerifying}
-              className="w-full md:w-auto md:max-w-xs bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out disabled:opacity-50"
+              className="w-full md:w-auto md:max-w-xs bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out disabled:opacity-50"
             >
               {isVerifying ? "Submitting..." : "Submit Interest"}
             </button>
