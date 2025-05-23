@@ -35,7 +35,7 @@ export const Header = () => {
   }, [resolvedTheme, mounted]);
 
   return (
-    <header className="bg-background border-b sticky top-0 z-50">
+    <header className="bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-b sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center">
           <Image
