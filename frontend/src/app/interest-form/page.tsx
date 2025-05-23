@@ -89,6 +89,15 @@ export default function InterestFormPage() {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       currentFieldErrors.email = "Email address is invalid.";
     }
+    if (!formData.phone.trim()) {
+      currentFieldErrors.phone = "Phone number is required.";
+    }
+    if (!formData.address.trim()) {
+      currentFieldErrors.address = "Address is required.";
+    }
+    if (!formData.referrer.trim()) {
+      currentFieldErrors.referrer = "Referrer is required.";
+    }
     if (!formData.commitment) {
       currentFieldErrors.commitment = "Commitment choice is required.";
     }
@@ -252,7 +261,7 @@ export default function InterestFormPage() {
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-1"
             >
-              Cell phone (Optional)
+              Cell Phone
             </label>
             <input
               type="tel"
@@ -280,7 +289,7 @@ export default function InterestFormPage() {
               htmlFor="address"
               className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-1"
             >
-              Home address (Street, City, State, Zip) (Optional)
+              Home Address (Street, City, State, Zip)
             </label>
             <textarea
               name="address"
@@ -310,7 +319,7 @@ export default function InterestFormPage() {
               htmlFor="referrer"
               className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-1"
             >
-              Who referred or recruited you? (First and Last Name) (Optional)
+              Who referred or recruited you? (First and Last Name)
             </label>
             <input
               type="text"
