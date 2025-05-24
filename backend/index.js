@@ -5,7 +5,7 @@ const cors = require('cors'); // Import CORS
 const app = express();
 // const port = process.env.PORT || 3001; // Vercel handles the port, this should remain commented
 
-const { getClassyAppAccessToken, getCampaignsByOrganization, getCampaignById, getClassyCampaignTransactions, getClassyCampaignFundraisingTeams, getClassyCampaignFundraisingPages } = require('./classyService');
+const { getClassyAppAccessToken, getCampaignsByOrganization, getCampaignById, getOrganizationById, getClassyCampaignTransactions, getClassyCampaignFundraisingTeams, getClassyCampaignFundraisingPages, getClassyCampaignTopFundraisers } = require('./classyService');
 // Removed https require as it's not directly used in index.js after classyService abstraction
 
 // --- Database Placeholder ---
@@ -57,6 +57,26 @@ app.get('/api/classy/campaigns/:campaignId', async (req, res) => {
   }
 });
 
+// Route to get organization details
+app.get('/api/classy/organizations/:organizationId', async (req, res) => {
+  try {
+    const { organizationId } = req.params;
+    const queryParamsString = new URLSearchParams(req.query).toString();
+    const data = await getOrganizationById(organizationId, queryParamsString);
+    // The frontend expects { organizationName: 'Name' }
+    // Classy API returns { name: 'Name', ...otherProps }
+    // We need to adapt this response for the frontend
+    if (data && data.name) {
+      res.json({ organizationName: data.name });
+    } else {
+      res.status(404).json({ error: 'Organization not found or name missing in response' });
+    }
+  } catch (error) {
+    console.error(`Error fetching Classy organization details for ${req.params.organizationId}:`, error);
+    res.status(500).json({ error: error.message || 'Failed to fetch organization details' });
+  }
+});
+
 // Route to get campaign transactions
 app.get('/api/classy/campaigns/:campaignId/transactions', async (req, res) => {
   try {
@@ -93,6 +113,23 @@ app.get('/api/classy/campaigns/:campaignId/fundraising-pages', async (req, res) 
   } catch (error) {
     console.error(`Error fetching Classy campaign fundraising pages for ${req.params.campaignId}:`, error);
     res.status(500).json({ error: error.message || 'Failed to fetch fundraising pages' });
+  }
+});
+
+// Route to get campaign top fundraisers
+app.get('/api/classy/campaigns/:campaignId/top-fundraisers', async (req, res) => {
+  try {
+    const { campaignId } = req.params;
+    const queryParamsString = new URLSearchParams(req.query).toString();
+    const data = await getClassyCampaignTopFundraisers(campaignId, queryParamsString);
+    // The frontend expects { data: [fundraisers] }
+    // The Classy /fundraising-pages endpoint returns { data: [pages], total: X, ... }
+    // We need to make sure the response is just { data: [...] } if the frontend expects that.
+    // For now, let's assume the classyService function already returns the array or the frontend can handle the full Classy response.
+    res.json(data); // Assuming classyService returns it in a format the frontend can use or the frontend adapts it.
+  } catch (error) {
+    console.error(`Error fetching Classy campaign top fundraisers for ${req.params.campaignId}:`, error);
+    res.status(500).json({ error: error.message || 'Failed to fetch top fundraisers' });
   }
 });
 
