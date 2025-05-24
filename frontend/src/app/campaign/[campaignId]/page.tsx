@@ -127,6 +127,21 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
           );
         }
         const campaignResult = await campaignResponse.json();
+
+        // ADDED: Check if the expected data structure is present
+        if (!campaignResult || !campaignResult.data) {
+          // Try to get more specific error from backend if possible
+          const errorMessage =
+            campaignResult?.error ||
+            campaignResult?.message ||
+            "Campaign data is missing or in an unexpected format.";
+          console.error(
+            "Error from backend or malformed campaign data:",
+            campaignResult,
+          );
+          throw new Error(errorMessage);
+        }
+
         const apiData = campaignResult.data as CampaignDataFromAPI;
 
         // Prepare for parallel fetches
