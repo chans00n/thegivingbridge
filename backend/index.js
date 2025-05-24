@@ -242,8 +242,9 @@ app.get("/api/classy/campaigns/:campaignId/transactions", async (req, res) => {
           amount;
 
         return {
-          id: transaction.id,
-          donorName: donorName,
+          id: transaction.id.toString(), // Convert to string to match frontend interface
+          type: "donation", // Set type to donation so frontend shows amounts
+          userName: donorName, // Use 'userName' to match frontend interface
           amount: transactionAmount,
           timestamp: transaction.purchased_at || transaction.created_at,
           message: transaction.comment || "",
