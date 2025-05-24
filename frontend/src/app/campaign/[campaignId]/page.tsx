@@ -69,6 +69,20 @@ interface CampaignDataFromAPI {
   organization_id?: number;
   currency_code?: string;
   default_page_appeal?: string; // Added for campaign story
+  total_raised?: number; // Total raised amount from API
+  overview?: {
+    // Campaign overview data when using 'with=overview'
+    raised_amount?: number;
+    progress_bar_amount?: number;
+    net_amount?: number;
+    hard_credits_amount?: number;
+    soft_credits_amount?: number;
+    donations_count?: number;
+    donors_count?: number;
+    fees_amount?: number;
+    largest_donation_amount?: number;
+    average_donation_amount?: number;
+  };
 }
 
 // This is the type expected by CampaignHero and other components
@@ -153,6 +167,22 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
         let organizerName = `Organization ID: ${apiData.organization_id || "N/A"}`;
         let fetchedTopFundraisers: TopFundraiserData[] = [];
 
+        // Try to get raised amount from campaign overview first
+        if (apiData.overview && apiData.overview.raised_amount) {
+          raisedAmount = apiData.overview.raised_amount;
+          console.log(`Using overview raised amount: $${raisedAmount}`);
+        } else if (apiData.overview && apiData.overview.progress_bar_amount) {
+          raisedAmount = apiData.overview.progress_bar_amount;
+          console.log(`Using overview progress bar amount: $${raisedAmount}`);
+        } else if (apiData.total_raised) {
+          raisedAmount = apiData.total_raised;
+          console.log(`Using campaign total_raised: $${raisedAmount}`);
+        } else {
+          console.log(
+            "No raised amount found in campaign data, will try to calculate from transactions",
+          );
+        }
+
         const promises = [];
 
         // Promise for transactions and activities
@@ -166,8 +196,16 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
             .then(async (res) => {
               if (res.ok) {
                 const result = await res.json();
-                if (result && typeof result.totalRaisedAmount === "number") {
+                // Only use transaction total if we don't already have a raised amount from campaign data
+                if (
+                  raisedAmount === 0 &&
+                  result &&
+                  typeof result.totalRaisedAmount === "number"
+                ) {
                   raisedAmount = result.totalRaisedAmount;
+                  console.log(
+                    `Using calculated total from transactions: $${raisedAmount}`,
+                  );
                 }
                 if (result && Array.isArray(result.activityItems)) {
                   fetchedActivities = result.activityItems.map(
