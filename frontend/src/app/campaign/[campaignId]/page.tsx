@@ -113,9 +113,12 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
 
       try {
         // Fetch primary campaign data
-        const campaignResponse = await fetch(
-          `${apiBaseUrl}/api/classy/campaigns/${campaignId}`,
+        const campaignUrl = new URL(
+          `/api/classy/campaigns/${campaignId}`,
+          apiBaseUrl,
         );
+        const campaignResponse = await fetch(campaignUrl.toString());
+
         if (!campaignResponse.ok) {
           const errorData = await campaignResponse.json();
           throw new Error(
@@ -136,7 +139,12 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
 
         // Promise for transactions and activities
         promises.push(
-          fetch(`${apiBaseUrl}/api/classy/campaigns/${campaignId}/transactions`)
+          fetch(
+            new URL(
+              `/api/classy/campaigns/${campaignId}/transactions`,
+              apiBaseUrl,
+            ).toString(),
+          )
             .then(async (res) => {
               if (res.ok) {
                 const result = await res.json();
@@ -173,7 +181,10 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
         if (apiData.organization_id) {
           promises.push(
             fetch(
-              `${apiBaseUrl}/api/classy/organizations/${apiData.organization_id}`,
+              new URL(
+                `/api/classy/organizations/${apiData.organization_id}`,
+                apiBaseUrl,
+              ).toString(),
             )
               .then(async (res) => {
                 if (res.ok) {
@@ -196,7 +207,10 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
         // Promise for top fundraisers
         promises.push(
           fetch(
-            `${apiBaseUrl}/api/classy/campaigns/${campaignId}/top-fundraisers`,
+            new URL(
+              `/api/classy/campaigns/${campaignId}/top-fundraisers`,
+              apiBaseUrl,
+            ).toString(),
           )
             .then(async (res) => {
               if (res.ok) {

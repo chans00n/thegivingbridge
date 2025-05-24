@@ -116,9 +116,10 @@ export default function CampaignsPage() {
       );
 
       try {
-        const response = await fetch(
-          `${apiBaseUrl}/api/classy/campaigns?${queryParams.toString()}`,
-        );
+        const url = new URL(`/api/classy/campaigns`, apiBaseUrl);
+        url.search = queryParams.toString();
+        const response = await fetch(url.toString());
+
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.message || `API Error: ${response.status}`);
