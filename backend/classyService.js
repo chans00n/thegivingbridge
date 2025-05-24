@@ -93,14 +93,14 @@ async function getCampaignsByOrganization(orgId, queryParams = '') {
 
 // Get a specific campaign by ID
 async function getCampaignById(campaignId, queryParams = 'with=overview') {
-  const orgId = process.env.CLASSY_ORGANIZATION_ID; // Use the backend-specific env var
-  if (!orgId) {
-    console.error('Classy Organization ID is not configured in environment variables for getCampaignById.');
-    throw new Error('Classy Organization ID is required for fetching campaign details.');
-  }
+  // const orgId = process.env.CLASSY_ORGANIZATION_ID; // Use the backend-specific env var
+  // if (!orgId) {
+  //   console.error('Classy Organization ID is not configured in environment variables for getCampaignById.');
+  //   throw new Error('Classy Organization ID is required for fetching campaign details.');
+  // }
   if (!campaignId) throw new Error('Campaign ID is required.');
-  return makeClassyGetRequest(`/organizations/${orgId}/campaigns/${campaignId}`, queryParams); // Original
-  // return makeClassyGetRequest(`/campaigns/${campaignId}`, queryParams); // Testing direct campaign endpoint
+  // return makeClassyGetRequest(`/organizations/${orgId}/campaigns/${campaignId}`, queryParams); // Original
+  return makeClassyGetRequest(`/campaigns/${campaignId}`, queryParams); // Testing direct campaign endpoint
 }
 
 // Get transactions for a campaign
