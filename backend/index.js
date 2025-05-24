@@ -3,10 +3,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors'); // Import CORS
 const app = express();
-// const port = process.env.PORT || 3001; // Vercel handles the port
+// const port = process.env.PORT || 3001; // Vercel handles the port, this should remain commented
 
-const { getClassyAppAccessToken, getClassyCampaigns, getClassyCampaignDetails, getClassyCampaignTransactions, getClassyCampaignFundraisingTeams, getClassyCampaignFundraisingPages } = require('./classyService');
-const https = require('https');
+const { getClassyAppAccessToken, getCampaignsByOrganization, getCampaignById, getClassyCampaignTransactions, getClassyCampaignFundraisingTeams, getClassyCampaignFundraisingPages } = require('./classyService');
+// Removed https require as it's not directly used in index.js after classyService abstraction
 
 // --- Database Placeholder ---
 // const { Pool } = require('pg');
@@ -36,7 +36,8 @@ app.get('/api/classy/campaigns', async (req, res) => {
     if (!orgId) {
       return res.status(400).json({ error: 'Classy Organization ID is not configured.' });
     }
-    const data = await getClassyCampaigns(orgId, req.query);
+    const queryParamsString = new URLSearchParams(req.query).toString();
+    const data = await getCampaignsByOrganization(orgId, queryParamsString);
     res.json(data);
   } catch (error) {
     console.error('Error fetching Classy campaigns:', error);
@@ -48,7 +49,7 @@ app.get('/api/classy/campaigns', async (req, res) => {
 app.get('/api/classy/campaigns/:campaignId', async (req, res) => {
   try {
     const { campaignId } = req.params;
-    const data = await getClassyCampaignDetails(campaignId, req.query);
+    const data = await getCampaignById(campaignId); // getCampaignById in classyService handles 'with=overview'
     res.json(data);
   } catch (error) {
     console.error(`Error fetching Classy campaign details for ${req.params.campaignId}:`, error);
@@ -60,7 +61,8 @@ app.get('/api/classy/campaigns/:campaignId', async (req, res) => {
 app.get('/api/classy/campaigns/:campaignId/transactions', async (req, res) => {
   try {
     const { campaignId } = req.params;
-    const data = await getClassyCampaignTransactions(campaignId, req.query);
+    const queryParamsString = new URLSearchParams(req.query).toString();
+    const data = await getClassyCampaignTransactions(campaignId, queryParamsString);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching Classy campaign transactions for ${req.params.campaignId}:`, error);
@@ -72,7 +74,8 @@ app.get('/api/classy/campaigns/:campaignId/transactions', async (req, res) => {
 app.get('/api/classy/campaigns/:campaignId/fundraising-teams', async (req, res) => {
   try {
     const { campaignId } = req.params;
-    const data = await getClassyCampaignFundraisingTeams(campaignId, req.query);
+    const queryParamsString = new URLSearchParams(req.query).toString();
+    const data = await getClassyCampaignFundraisingTeams(campaignId, queryParamsString);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching Classy campaign fundraising teams for ${req.params.campaignId}:`, error);
@@ -84,7 +87,8 @@ app.get('/api/classy/campaigns/:campaignId/fundraising-teams', async (req, res) 
 app.get('/api/classy/campaigns/:campaignId/fundraising-pages', async (req, res) => {
   try {
     const { campaignId } = req.params;
-    const data = await getClassyCampaignFundraisingPages(campaignId, req.query);
+    const queryParamsString = new URLSearchParams(req.query).toString();
+    const data = await getClassyCampaignFundraisingPages(campaignId, queryParamsString);
     res.json(data);
   } catch (error) {
     console.error(`Error fetching Classy campaign fundraising pages for ${req.params.campaignId}:`, error);
@@ -92,9 +96,10 @@ app.get('/api/classy/campaigns/:campaignId/fundraising-pages', async (req, res) 
   }
 });
 
-
+// app.listen() should remain commented out for Vercel serverless deployment
+// const port = process.env.PORT || 3001;
 // app.listen(port, () => {
-//   console.log(`Minimal Backend server listening on port ${port}`);
+//   console.log(`Express Backend server listening on port ${port}`);
 // });
 
 module.exports = app; // Export the app for Vercel 
