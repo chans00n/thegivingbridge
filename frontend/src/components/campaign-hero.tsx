@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Progress } from "@/components/ui/progress";
+import { AnimatedProgress } from "@/components/ui/animated-progress";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
@@ -68,7 +68,14 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
                 raised of ${campaign.goalAmount.toLocaleString()} goal
               </div>
             </div>
-            <Progress value={progressPercentage} className="h-3 w-full mb-2" />
+            <AnimatedProgress
+              value={progressPercentage}
+              className="w-full mb-2"
+              size="md"
+              showMilestones={true}
+              celebrateGoal={true}
+              milestones={[25, 50, 75, 90]}
+            />
             <div className="text-center text-sm font-medium text-neutral-700 dark:text-neutral-300">
               {progressPercentage.toFixed(0)}% Complete
             </div>
@@ -111,7 +118,14 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
             <span>Raised: ${campaign.raisedAmount.toLocaleString()}</span>
             <span>Goal: ${campaign.goalAmount.toLocaleString()}</span>
           </div>
-          <Progress value={progressPercentage} className="h-3 w-full" />
+          <AnimatedProgress
+            value={progressPercentage}
+            className="w-full"
+            size="md"
+            showMilestones={true}
+            celebrateGoal={true}
+            milestones={[25, 50, 75, 90]}
+          />
         </div>
 
         <Button
