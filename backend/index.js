@@ -111,6 +111,16 @@ app.get("/api/classy/campaigns/:campaignId/transactions", async (req, res) => {
       queryParamsString,
     );
 
+    // DEBUG: Log the raw Classy API response
+    console.log("=== TRANSACTIONS DEBUG ===");
+    console.log("Raw Classy API response:", JSON.stringify(data, null, 2));
+    if (data && data.data && data.data.length > 0) {
+      console.log(
+        "First transaction sample:",
+        JSON.stringify(data.data[0], null, 2),
+      );
+    }
+
     // Process the raw Classy API response for frontend consumption
     let totalRaisedAmount = 0;
     let activityItems = [];
@@ -120,6 +130,9 @@ app.get("/api/classy/campaigns/:campaignId/transactions", async (req, res) => {
       totalRaisedAmount = data.data.reduce((sum, transaction) => {
         // Each transaction has an 'amount' field in cents, convert to dollars
         const amount = transaction.amount ? transaction.amount / 100 : 0;
+        console.log(
+          `Transaction ${transaction.id}: amount=${transaction.amount}, converted=${amount}`,
+        );
         return sum + amount;
       }, 0);
 
@@ -142,6 +155,9 @@ app.get("/api/classy/campaigns/:campaignId/transactions", async (req, res) => {
       });
     }
 
+    console.log("Processed totalRaisedAmount:", totalRaisedAmount);
+    console.log("Processed activityItems count:", activityItems.length);
+
     // Return processed data in the format the frontend expects
     res.json({
       totalRaisedAmount,
@@ -152,11 +168,9 @@ app.get("/api/classy/campaigns/:campaignId/transactions", async (req, res) => {
       `Error fetching Classy campaign transactions for ${req.params.campaignId}:`,
       error,
     );
-    res
-      .status(500)
-      .json({
-        error: error.message || "Failed to fetch campaign transactions",
-      });
+    res.status(500).json({
+      error: error.message || "Failed to fetch campaign transactions",
+    });
   }
 });
 
@@ -220,6 +234,16 @@ app.get(
         queryParamsString,
       );
 
+      // DEBUG: Log the raw Classy API response
+      console.log("=== TOP FUNDRAISERS DEBUG ===");
+      console.log("Raw Classy API response:", JSON.stringify(data, null, 2));
+      if (data && data.data && data.data.length > 0) {
+        console.log(
+          "First fundraiser sample:",
+          JSON.stringify(data.data[0], null, 2),
+        );
+      }
+
       // Process the fundraising pages data for the frontend
       let processedFundraisers = [];
 
@@ -238,6 +262,10 @@ app.get(
               : 0;
             const goalAmount = page.goal ? page.goal / 100 : 0;
 
+            console.log(
+              `Fundraiser ${page.id}: amount_raised=${page.amount_raised}, goal=${page.goal}, converted: raised=${raisedAmount}, goal=${goalAmount}`,
+            );
+
             return {
               id: page.id,
               name: fundraiserName,
@@ -250,6 +278,9 @@ app.get(
           // Sort by amount raised in descending order
           .sort((a, b) => b.raisedAmount - a.raisedAmount);
       }
+
+      console.log("Processed fundraisers count:", processedFundraisers.length);
+      console.log("Processed fundraisers sample:", processedFundraisers[0]);
 
       // Return processed data in the format the frontend expects
       res.json({
