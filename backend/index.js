@@ -128,12 +128,23 @@ app.get("/api/classy/campaigns/:campaignId/transactions", async (req, res) => {
     if (data && Array.isArray(data.data)) {
       // Calculate total raised amount from all transactions
       totalRaisedAmount = data.data.reduce((sum, transaction) => {
-        // Each transaction has an 'amount' field in cents, convert to dollars
-        const amount = transaction.amount ? transaction.amount / 100 : 0;
+        // Try multiple possible amount fields from Classy API
+        let transactionAmount = 0;
+        if (transaction.donation_gross_amount) {
+          transactionAmount = transaction.donation_gross_amount;
+        } else if (transaction.total_gross_amount) {
+          transactionAmount = transaction.total_gross_amount;
+        } else if (transaction.initial_gross_amount) {
+          transactionAmount = transaction.initial_gross_amount;
+        } else if (transaction.amount) {
+          transactionAmount = transaction.amount / 100; // Convert cents to dollars if it's the amount field
+        }
+
         console.log(
-          `Transaction ${transaction.id}: amount=${transaction.amount}, converted=${amount}`,
+          `Transaction ${transaction.id}: donation_gross_amount=${transaction.donation_gross_amount}, total_gross_amount=${transaction.total_gross_amount}, initial_gross_amount=${transaction.initial_gross_amount}, amount=${transaction.amount}, using=${transactionAmount}`,
         );
-        return sum + amount;
+
+        return sum + transactionAmount;
       }, 0);
 
       // Transform transactions into activity items for the frontend
@@ -144,11 +155,23 @@ app.get("/api/classy/campaigns/:campaignId/transactions", async (req, res) => {
             transaction.member_email_address
           : transaction.company_name || "Anonymous";
 
+        // Try multiple possible amount fields from Classy API (same logic as above)
+        let transactionAmount = 0;
+        if (transaction.donation_gross_amount) {
+          transactionAmount = transaction.donation_gross_amount;
+        } else if (transaction.total_gross_amount) {
+          transactionAmount = transaction.total_gross_amount;
+        } else if (transaction.initial_gross_amount) {
+          transactionAmount = transaction.initial_gross_amount;
+        } else if (transaction.amount) {
+          transactionAmount = transaction.amount / 100; // Convert cents to dollars if it's the amount field
+        }
+
         return {
           id: transaction.id,
           userName: donorName,
           action: "donated",
-          amount: transaction.amount ? transaction.amount / 100 : 0, // Convert cents to dollars
+          amount: transactionAmount,
           timestamp: transaction.created_at,
           userAvatar: null, // Classy API doesn't provide avatar URLs
         };
@@ -259,11 +282,13 @@ app.get(
             // Calculate the raised amount (amount_raised is in cents in Classy API)
             const raisedAmount = page.amount_raised
               ? page.amount_raised / 100
-              : 0;
-            const goalAmount = page.goal ? page.goal / 100 : 0;
+              : page.donation_gross_amount || page.total_gross_amount || 0;
+            const goalAmount = page.goal
+              ? page.goal / 100
+              : page.goal_amount || page.target_amount || 0;
 
             console.log(
-              `Fundraiser ${page.id}: amount_raised=${page.amount_raised}, goal=${page.goal}, converted: raised=${raisedAmount}, goal=${goalAmount}`,
+              `Fundraiser ${page.id}: amount_raised=${page.amount_raised}, donation_gross_amount=${page.donation_gross_amount}, total_gross_amount=${page.total_gross_amount}, goal=${page.goal}, goal_amount=${page.goal_amount}, target_amount=${page.target_amount}, converted: raised=${raisedAmount}, goal=${goalAmount}`,
             );
 
             return {
