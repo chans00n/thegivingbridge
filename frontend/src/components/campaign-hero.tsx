@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { AnimatedProgress } from "@/components/ui/animated-progress";
+import { aria } from "@/lib/accessibility";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
@@ -75,6 +76,14 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
               showMilestones={true}
               celebrateGoal={true}
               milestones={[25, 50, 75, 90]}
+              aria-label={aria.progressLabel(
+                campaign.raisedAmount,
+                campaign.goalAmount,
+              )}
+              aria-valuenow={progressPercentage}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              role="progressbar"
             />
             <div className="text-center text-sm font-medium text-neutral-700 dark:text-neutral-300">
               {progressPercentage.toFixed(0)}% Complete
@@ -125,6 +134,14 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
             showMilestones={true}
             celebrateGoal={true}
             milestones={[25, 50, 75, 90]}
+            aria-label={aria.progressLabel(
+              campaign.raisedAmount,
+              campaign.goalAmount,
+            )}
+            aria-valuenow={progressPercentage}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            role="progressbar"
           />
         </div>
 

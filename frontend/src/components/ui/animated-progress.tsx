@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { cn } from "@/lib/utils";
+import { aria, accessibleColors } from "@/lib/accessibility";
 import { Sparkles, Star, Trophy, Target } from "lucide-react";
 
 interface AnimatedProgressProps
@@ -14,6 +15,11 @@ interface AnimatedProgressProps
   celebrateGoal?: boolean;
   showPercentage?: boolean;
   size?: "sm" | "md" | "lg";
+  // Accessibility props
+  ariaLabel?: string;
+  currentAmount?: number;
+  goalAmount?: number;
+  currency?: string;
 }
 
 const sizeClasses = {
@@ -31,6 +37,10 @@ export const AnimatedProgress: React.FC<AnimatedProgressProps> = ({
   celebrateGoal = true,
   showPercentage = false,
   size = "md",
+  ariaLabel,
+  currentAmount,
+  goalAmount,
+  currency = "dollars",
   ...props
 }) => {
   const [displayValue, setDisplayValue] = React.useState(0);
