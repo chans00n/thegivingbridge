@@ -32,7 +32,11 @@ interface ActivityItem {
 
 // ADDED: Utility function to format date strings to relative time
 function formatRelativeTime(dateString: string): string {
+  if (!dateString) return "Unknown";
+
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Unknown";
+
   const now = new Date();
   const seconds = Math.round((now.getTime() - date.getTime()) / 1000);
   const minutes = Math.round(seconds / 60);

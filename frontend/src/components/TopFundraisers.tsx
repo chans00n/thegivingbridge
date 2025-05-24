@@ -22,7 +22,7 @@ interface TopFundraisersProps {
 }
 
 const getInitials = (name: string) => {
-  const names = name.split(" ");
+  const names = (name || "Unknown").split(" ");
   if (names.length === 1) return names[0][0]?.toUpperCase() || "U";
   return (
     (names[0][0]?.toUpperCase() || "") +

@@ -38,7 +38,7 @@ interface CampaignActivityFeedProps {
 }
 
 const getInitials = (name: string) => {
-  const names = name.split(" ");
+  const names = (name || "Anonymous").split(" ");
   if (names.length === 1) return names[0][0]?.toUpperCase() || "A";
   return (
     (names[0][0]?.toUpperCase() || "") +

@@ -19,7 +19,7 @@ export const CampaignStory: React.FC<CampaignStoryProps> = ({
         )}
         {/* For rendering plain text. If story were HTML, would need different handling. */}
         <div className="prose prose-slate max-w-none dark:prose-invert lg:prose-lg xl:prose-xl">
-          {story.split("\n").map((paragraph, index) => (
+          {(story || "").split("\n").map((paragraph, index) => (
             <p key={index} className={index > 0 ? "mt-4" : ""}>
               {paragraph}
             </p>
