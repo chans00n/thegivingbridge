@@ -130,7 +130,7 @@ async function getOrganizationById(organizationId, queryParams = '') {
 // Get top fundraisers for a campaign
 async function getClassyCampaignTopFundraisers(campaignId, queryParams = '') {
   if (!campaignId) throw new Error('Campaign ID is required.');
-  return makeClassyGetRequest(`/campaigns/${campaignId}/fundraising-pages`, queryParams + (queryParams ? '&' : '') + 'sort=total_raised:desc&per_page=5'); // Example: Get top 5
+  return makeClassyGetRequest(`/campaigns/${campaignId}/fundraising-pages`, queryParams + (queryParams ? '&' : '') + 'sort=raised_amount:desc&per_page=5'); // Changed total_raised to raised_amount
 }
 
 module.exports = {
