@@ -74,12 +74,24 @@ app.get("/api/classy/campaigns/:campaignId", async (req, res) => {
       console.log("Campaign overview:", JSON.stringify(data.overview, null, 2));
     }
 
-    // Process the campaign data to convert goal from cents to dollars
+    // Process the campaign data - check if goal needs conversion from cents to dollars
     if (data && data.goal && typeof data.goal === "number") {
-      data.goal = data.goal / 100; // Convert from cents to dollars
-      console.log(
-        `Campaign ${campaignId}: converted goal from ${data.goal * 100} cents to $${data.goal}`,
-      );
+      // Check if the goal looks like it's in cents (large number) vs dollars (reasonable number)
+      // If raw_goal shows decimal format like "10000.000", it's likely already in dollars
+      const isLikelyInCents =
+        data.goal > 1000 && (!data.raw_goal || !data.raw_goal.includes("."));
+
+      if (isLikelyInCents) {
+        const originalGoal = data.goal;
+        data.goal = data.goal / 100; // Convert from cents to dollars
+        console.log(
+          `Campaign ${campaignId}: converted goal from ${originalGoal} cents to $${data.goal}`,
+        );
+      } else {
+        console.log(
+          `Campaign ${campaignId}: goal appears to already be in dollars: $${data.goal} (raw_goal: ${data.raw_goal})`,
+        );
+      }
     }
 
     // Log various amount fields that might be present
@@ -316,28 +328,62 @@ app.get(
     try {
       const { campaignId } = req.params;
       const queryParamsString = new URLSearchParams(req.query).toString();
-      const data = await getClassyCampaignTopFundraisers(
-        campaignId,
-        queryParamsString,
-      );
+
+      // Get both fundraising pages and transaction data
+      const [pagesData, transactionsData] = await Promise.all([
+        getClassyCampaignTopFundraisers(campaignId, queryParamsString),
+        getClassyCampaignTransactions(campaignId, ""),
+      ]);
 
       // DEBUG: Log the raw Classy API response
       console.log("=== TOP FUNDRAISERS DEBUG ===");
-      console.log("Raw Classy API response:", JSON.stringify(data, null, 2));
-      if (data && data.data && data.data.length > 0) {
+      console.log(
+        "Raw Classy API response:",
+        JSON.stringify(pagesData, null, 2),
+      );
+      if (pagesData && pagesData.data && pagesData.data.length > 0) {
         console.log(
           "First fundraiser sample:",
-          JSON.stringify(data.data[0], null, 2),
+          JSON.stringify(pagesData.data[0], null, 2),
         );
+      }
+
+      // Calculate raised amounts per fundraising page from transactions
+      const raisedAmountsByPage = {};
+      if (transactionsData && Array.isArray(transactionsData.data)) {
+        console.log(
+          `Calculating raised amounts from ${transactionsData.data.length} transactions`,
+        );
+
+        transactionsData.data.forEach((transaction) => {
+          if (transaction.fundraising_page_id) {
+            const pageId = transaction.fundraising_page_id;
+            const amount =
+              transaction.donation_gross_amount ||
+              transaction.total_gross_amount ||
+              transaction.initial_gross_amount ||
+              transaction.purchased_amount ||
+              transaction.net_amount ||
+              transaction.amount ||
+              0;
+
+            if (!raisedAmountsByPage[pageId]) {
+              raisedAmountsByPage[pageId] = 0;
+            }
+            raisedAmountsByPage[pageId] += amount;
+          }
+        });
+
+        console.log("Raised amounts by page:", raisedAmountsByPage);
       }
 
       // Process the fundraising pages data for the frontend
       let processedFundraisers = [];
 
-      if (data && Array.isArray(data.data)) {
-        console.log(`Processing ${data.data.length} fundraising pages`);
+      if (pagesData && Array.isArray(pagesData.data)) {
+        console.log(`Processing ${pagesData.data.length} fundraising pages`);
 
-        processedFundraisers = data.data
+        processedFundraisers = pagesData.data
           .map((page, index) => {
             // DEBUG: Log all available fields for the first fundraiser
             if (index === 0) {
@@ -352,25 +398,12 @@ app.get(
             const fundraiserName =
               page.title || page.alias || `Fundraiser ${index + 1}`;
 
-            // Try to get raised amount from potential overview/aggregate data
-            let raisedAmount = 0;
+            // Get raised amount from calculated transaction data
+            const raisedAmount = raisedAmountsByPage[page.id] || 0;
 
-            // Check for various possible amount fields that might be included with 'with=overview,aggregates'
-            if (page.overview && page.overview.raised_amount) {
-              raisedAmount = page.overview.raised_amount;
-              console.log(`  Found overview.raised_amount: ${raisedAmount}`);
-            } else if (page.aggregates && page.aggregates.raised_amount) {
-              raisedAmount = page.aggregates.raised_amount;
-              console.log(`  Found aggregates.raised_amount: ${raisedAmount}`);
-            } else if (page.amount_raised) {
-              raisedAmount = page.amount_raised / 100; // Convert from cents if present
-              console.log(
-                `  Found amount_raised: ${page.amount_raised} cents = $${raisedAmount}`,
-              );
-            } else if (page.total_raised) {
-              raisedAmount = page.total_raised;
-              console.log(`  Found total_raised: ${raisedAmount}`);
-            }
+            console.log(
+              `  Fundraiser ${page.id} raised amount from transactions: $${raisedAmount}`,
+            );
 
             // For goals: the 'goal' field appears to already be in dollars, not cents
             const goalAmount = page.goal || 0; // Don't divide by 100 - already in dollars
