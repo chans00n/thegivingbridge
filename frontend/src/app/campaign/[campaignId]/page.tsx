@@ -319,12 +319,12 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
       </div>
 
       {/* MOVED: TopFundraisers component now comes before Activity Feed */}
-      {/* <div className="my-8">
+      <div className="my-8">
         <TopFundraisers
           fundraisers={topFundraisers}
           currencyCode={campaignPageData.currencyCode}
         />
-      </div> */}
+      </div>
 
       {/* MOVED: CampaignActivityFeed component now comes after TopFundraisers*/}
       <div className="my-8">

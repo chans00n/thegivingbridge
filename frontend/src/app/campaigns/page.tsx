@@ -158,7 +158,7 @@ export default function CampaignsPage() {
     }
 
     fetchCampaignsData();
-  }, [selectedType, currentPage, searchTrigger]);
+  }, [selectedType, currentPage, searchTrigger, searchTerm]);
 
   useEffect(() => {
     let processedCampaigns = [...sourceCampaigns];
