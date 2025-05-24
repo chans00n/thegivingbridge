@@ -37,7 +37,7 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
   if (compact) {
     // Compact layout for sidebar
     return (
-      <div className="overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800">
+      <div className="overflow-hidden rounded-lg bg-white shadow-lg dark:bg-neutral-800">
         {campaign.imageUrl && (
           <div className="w-full">
             <AspectRatio ratio={4 / 3}>
@@ -52,24 +52,24 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
           </div>
         )}
         <div className="p-4">
-          <h1 className="mb-3 text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+          <h1 className="mb-3 text-xl font-bold leading-tight tracking-tight text-neutral-900 dark:text-white">
             {campaign.title}
           </h1>
-          <p className="mb-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+          <p className="mb-4 text-sm font-medium text-neutral-600 dark:text-neutral-400">
             Organized by: {campaign.organizerName}
           </p>
 
           <div className="mb-4">
             <div className="mb-2 text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+              <div className="text-2xl font-bold text-neutral-900 dark:text-white">
                 ${campaign.raisedAmount.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-neutral-600 dark:text-neutral-400">
                 raised of ${campaign.goalAmount.toLocaleString()} goal
               </div>
             </div>
             <Progress value={progressPercentage} className="h-3 w-full mb-2" />
-            <div className="text-center text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="text-center text-sm font-medium text-neutral-700 dark:text-neutral-300">
               {progressPercentage.toFixed(0)}% Complete
             </div>
           </div>
@@ -84,7 +84,7 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
 
   // Default layout for mobile/full-width
   return (
-    <div className="mb-8 overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800">
+    <div className="mb-8 overflow-hidden rounded-lg bg-white shadow-lg dark:bg-neutral-800">
       {campaign.imageUrl && (
         <div className="w-full">
           <AspectRatio ratio={16 / 9}>
@@ -99,15 +99,15 @@ export const CampaignHero: React.FC<CampaignHeroProps> = ({
         </div>
       )}
       <div className="p-6">
-        <h1 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-4xl">
+        <h1 className="mb-3 text-3xl font-bold leading-tight tracking-tight text-neutral-900 dark:text-white md:text-4xl">
           {campaign.title}
         </h1>
-        <p className="mb-4 text-base font-medium text-gray-600 dark:text-gray-400">
+        <p className="mb-4 text-base font-medium text-neutral-600 dark:text-neutral-400">
           Organized by: {campaign.organizerName}
         </p>
 
         <div className="mb-4">
-          <div className="mb-1 flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300">
+          <div className="mb-1 flex justify-between text-sm font-medium text-neutral-700 dark:text-neutral-300">
             <span>Raised: ${campaign.raisedAmount.toLocaleString()}</span>
             <span>Goal: ${campaign.goalAmount.toLocaleString()}</span>
           </div>

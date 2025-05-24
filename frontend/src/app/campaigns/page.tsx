@@ -258,7 +258,7 @@ export default function CampaignsPage() {
       </div>
 
       {displayedCampaigns.length === 0 && !loading && (
-        <p className="text-center text-gray-600">
+        <p className="text-center text-neutral-600">
           {searchTerm || (selectedType && selectedType !== "_all_")
             ? "No campaigns match your search/filter."
             : "No active campaigns found."}
@@ -309,7 +309,7 @@ export default function CampaignsPage() {
         </div>
       )}
       {apiTotalCampaigns > 0 && (
-        <p className="text-center text-sm text-gray-500 mt-2">
+        <p className="text-center text-sm text-neutral-500 mt-2">
           Total matching campaigns: {apiTotalCampaigns}
         </p>
       )}

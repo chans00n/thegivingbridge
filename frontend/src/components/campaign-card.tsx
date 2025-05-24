@@ -52,8 +52,8 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
           className="object-cover transition-opacity duration-200 ease-in-out group-hover:opacity-75"
         />
       ) : (
-        <div className="w-full h-full bg-gray-200 flex items-center justify-center transition-opacity duration-200 ease-in-out group-hover:opacity-75">
-          <span className="text-gray-500">Placeholder Image</span>
+        <div className="w-full h-full bg-neutral-200 flex items-center justify-center transition-opacity duration-200 ease-in-out group-hover:opacity-75">
+          <span className="text-neutral-500">Placeholder Image</span>
         </div>
       )}
     </AspectRatio>
@@ -77,7 +77,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
         >
           {title}
         </CardTitle>
-        <CardDescription className="text-sm text-gray-600 mb-3 h-10 overflow-hidden text-ellipsis">
+        <CardDescription className="text-sm text-neutral-600 mb-3 h-10 overflow-hidden text-ellipsis">
           {description}
         </CardDescription>
         <div className="mb-3">

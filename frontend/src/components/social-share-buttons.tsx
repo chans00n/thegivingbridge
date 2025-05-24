@@ -31,10 +31,10 @@ export const SocialShareButtons: React.FC<SocialShareButtonsProps> = ({
   };
 
   return (
-    <div className="py-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
+    <div className="py-6 bg-white shadow-md rounded-lg dark:bg-neutral-800">
       <div className="px-6">
         {title && (
-          <h3 className="mb-4 text-xl font-semibold flex items-center text-gray-800 dark:text-white">
+          <h3 className="mb-4 text-xl font-semibold flex items-center text-neutral-800 dark:text-white">
             <Share2 className="mr-2 h-5 w-5" />
             {title}
           </h3>

@@ -342,7 +342,7 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
   const pageUrl = `/campaign/${campaignPageData.id}`;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-stone-50 dark:bg-neutral-900">
       {/* Mobile Layout: Single Column (default for mobile) */}
       <div className="container mx-auto px-4 py-8 lg:hidden">
         <CampaignHero
@@ -417,7 +417,7 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
         </div>
 
         {/* Right Column: Fixed Hero Sidebar */}
-        <div className="w-96 bg-white dark:bg-gray-800 shadow-xl">
+        <div className="w-96 bg-white dark:bg-neutral-800 shadow-xl">
           <div className="sticky top-0 h-screen overflow-y-auto">
             <div className="p-6">
               <CampaignHero

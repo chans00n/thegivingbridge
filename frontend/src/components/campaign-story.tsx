@@ -10,10 +10,10 @@ export const CampaignStory: React.FC<CampaignStoryProps> = ({
   title,
 }) => {
   return (
-    <div className="py-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
+    <div className="py-6 bg-white shadow-md rounded-lg dark:bg-neutral-800">
       <div className="px-6">
         {title && (
-          <h2 className="mb-4 text-2xl font-semibold leading-tight text-gray-900 dark:text-white">
+          <h2 className="mb-4 text-2xl font-semibold leading-tight text-neutral-900 dark:text-white">
             {title}
           </h2>
         )}

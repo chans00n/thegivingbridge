@@ -78,57 +78,54 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-200
                   ${
                     index === 0
-                      ? "bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-amber-200 dark:border-amber-800 ring-1 ring-amber-200 dark:ring-amber-800"
+                      ? "bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-800 dark:to-neutral-900 border-amber-200 dark:border-amber-800 ring-1 ring-amber-200 dark:ring-amber-800"
                       : "bg-card"
                   }
                 `}
               >
-                <CardHeader
-                  className={`
-                    flex flex-row items-center space-x-4 pb-2
-                  `}
-                >
-                  <span
-                    className={`
-                      text-3xl font-bold
-                      ${index === 0 ? "text-amber-600 dark:text-amber-400" : "text-primary"}
-                    `}
-                  >
-                    #{index + 1}
-                  </span>
-                  <Avatar
-                    className={`
-                      h-16 w-16 border-2
-                      ${index === 0 ? "border-amber-300 dark:border-amber-600" : "border-primary/50"}
-                    `}
-                  >
-                    {fundraiser.avatarUrl && (
-                      <AvatarImage
-                        src={fundraiser.avatarUrl}
-                        alt={fundraiser.name}
-                      />
-                    )}
-                    <AvatarFallback
+                <CardHeader className="pb-2">
+                  <div className="flex items-start space-x-3">
+                    <span
                       className={`
-                        text-2xl
-                        ${
-                          index === 0
-                            ? "text-amber-700 bg-amber-50 dark:text-amber-300 dark:bg-amber-950"
-                            : ""
-                        }
+                        text-2xl font-bold flex-shrink-0 mt-1
+                        ${index === 0 ? "text-amber-600 dark:text-amber-400" : "text-primary"}
                       `}
                     >
-                      {getInitials(fundraiser.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <CardTitle
+                      #{index + 1}
+                    </span>
+                    <Avatar
                       className={`
-                        text-xl leading-tight truncate
+                        h-14 w-14 border-2 flex-shrink-0
+                        ${index === 0 ? "border-amber-300 dark:border-amber-600" : "border-primary/50"}
                       `}
                     >
-                      {fundraiser.name}
-                    </CardTitle>
+                      {fundraiser.avatarUrl && (
+                        <AvatarImage
+                          src={fundraiser.avatarUrl}
+                          alt={fundraiser.name}
+                        />
+                      )}
+                      <AvatarFallback
+                        className={`
+                          text-xl
+                          ${
+                            index === 0
+                              ? "text-amber-700 bg-amber-50 dark:text-amber-300 dark:bg-amber-950"
+                              : ""
+                          }
+                        `}
+                      >
+                        {getInitials(fundraiser.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <CardTitle
+                        className="text-lg leading-tight break-words hyphens-auto"
+                        title={fundraiser.name}
+                      >
+                        {fundraiser.name}
+                      </CardTitle>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent
@@ -139,7 +136,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   <div
                     className={`
                       text-sm mb-1
-                      ${index === 0 ? "text-slate-700 dark:text-slate-300" : "text-muted-foreground"}
+                      ${index === 0 ? "text-neutral-700 dark:text-neutral-300" : "text-muted-foreground"}
                     `}
                   >
                     Raised{" "}
@@ -172,7 +169,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   <div
                     className={`
                       text-xs text-right
-                      ${index === 0 ? "text-slate-600 dark:text-slate-400" : "text-muted-foreground"}
+                      ${index === 0 ? "text-neutral-600 dark:text-neutral-400" : "text-muted-foreground"}
                     `}
                   >
                     {percentage.toFixed(0)}%
