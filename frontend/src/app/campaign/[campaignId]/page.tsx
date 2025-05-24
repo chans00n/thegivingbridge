@@ -342,46 +342,96 @@ export default function CampaignPage(/*{ params }: CampaignPageProps*/) {
   const pageUrl = `/campaign/${campaignPageData.id}`;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Remove the page-level h1, as the Hero will now handle the title */}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Mobile Layout: Single Column (default for mobile) */}
+      <div className="container mx-auto px-4 py-8 lg:hidden">
+        <CampaignHero
+          campaign={campaignPageData}
+          onDonateClick={() =>
+            alert(
+              "Donate Clicked! This will eventually go to the Classy donation page.",
+            )
+          }
+        />
 
-      {/* Use the CampaignHero component */}
-      <CampaignHero
-        campaign={campaignPageData}
-        onDonateClick={() =>
-          alert(
-            "Donate Clicked! This will eventually go to the Classy donation page.",
-          )
-        }
-      />
+        <div className="my-8">
+          <CampaignStory story={campaignPageData.story} title="Our Story" />
+        </div>
 
-      {/* Use the CampaignStory component */}
-      <div className="my-8">
-        <CampaignStory story={campaignPageData.story} title="Our Story" />
+        <div className="my-8">
+          <TopFundraisers
+            fundraisers={topFundraisers}
+            currencyCode={campaignPageData.currencyCode}
+          />
+        </div>
+
+        <div className="my-8">
+          <CampaignActivityFeed
+            activities={activities}
+            title="Recent Support"
+          />
+        </div>
+
+        <div className="my-8">
+          <SocialShareButtons
+            pageUrl={pageUrl}
+            pageTitle={campaignPageData.title}
+          />
+        </div>
       </div>
 
-      {/* MOVED: TopFundraisers component now comes before Activity Feed */}
-      <div className="my-8">
-        <TopFundraisers
-          fundraisers={topFundraisers}
-          currencyCode={campaignPageData.currencyCode}
-        />
-      </div>
+      {/* Desktop Layout: Two Column (hidden on mobile, shown on lg+) */}
+      <div className="hidden lg:flex lg:min-h-screen">
+        {/* Left Column: Scrolling Content */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="container mx-auto px-6 py-8 max-w-4xl">
+            {/* Story Section */}
+            <div className="mb-12">
+              <CampaignStory story={campaignPageData.story} title="Our Story" />
+            </div>
 
-      {/* MOVED: CampaignActivityFeed component now comes after TopFundraisers*/}
-      <div className="my-8">
-        <CampaignActivityFeed
-          activities={activities} // MODIFIED: Use activities state
-          title="Recent Support"
-        />
-      </div>
+            {/* Top Supporters Section */}
+            <div className="mb-12">
+              <TopFundraisers
+                fundraisers={topFundraisers}
+                currencyCode={campaignPageData.currencyCode}
+              />
+            </div>
 
-      {/* Use the SocialShareButtons component */}
-      <div className="my-8">
-        <SocialShareButtons
-          pageUrl={pageUrl}
-          pageTitle={campaignPageData.title}
-        />
+            {/* Recent Support Section */}
+            <div className="mb-12">
+              <CampaignActivityFeed
+                activities={activities}
+                title="Recent Support"
+              />
+            </div>
+
+            {/* Social Share Section */}
+            <div className="mb-8">
+              <SocialShareButtons
+                pageUrl={pageUrl}
+                pageTitle={campaignPageData.title}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Fixed Hero Sidebar */}
+        <div className="w-96 bg-white dark:bg-gray-800 shadow-xl">
+          <div className="sticky top-0 h-screen overflow-y-auto">
+            <div className="p-6">
+              <CampaignHero
+                campaign={campaignPageData}
+                compact={true}
+                onDonateClick={() =>
+                  alert(
+                    "Donate Clicked! This will eventually go to the Classy donation page.",
+                  )
+                }
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

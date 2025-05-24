@@ -21,17 +21,68 @@ interface CampaignData {
 interface CampaignHeroProps {
   campaign: CampaignData;
   onDonateClick?: () => void; // Optional: for when donate button functionality is added
+  compact?: boolean; // Optional: for sidebar/compact layout
 }
 
 export const CampaignHero: React.FC<CampaignHeroProps> = ({
   campaign,
   onDonateClick,
+  compact = false,
 }) => {
   const progressPercentage =
     campaign.goalAmount > 0
       ? (campaign.raisedAmount / campaign.goalAmount) * 100
       : 0;
 
+  if (compact) {
+    // Compact layout for sidebar
+    return (
+      <div className="overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800">
+        {campaign.imageUrl && (
+          <div className="w-full">
+            <AspectRatio ratio={4 / 3}>
+              <Image
+                src={campaign.imageUrl}
+                alt={campaign.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </AspectRatio>
+          </div>
+        )}
+        <div className="p-4">
+          <h1 className="mb-3 text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+            {campaign.title}
+          </h1>
+          <p className="mb-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+            Organized by: {campaign.organizerName}
+          </p>
+
+          <div className="mb-4">
+            <div className="mb-2 text-center">
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                ${campaign.raisedAmount.toLocaleString()}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                raised of ${campaign.goalAmount.toLocaleString()} goal
+              </div>
+            </div>
+            <Progress value={progressPercentage} className="h-3 w-full mb-2" />
+            <div className="text-center text-sm font-medium text-gray-700 dark:text-gray-300">
+              {progressPercentage.toFixed(0)}% Complete
+            </div>
+          </div>
+
+          <Button size="lg" className="w-full text-lg" onClick={onDonateClick}>
+            Donate Now
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Default layout for mobile/full-width
   return (
     <div className="mb-8 overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800">
       {campaign.imageUrl && (
