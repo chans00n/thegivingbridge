@@ -78,7 +78,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-200
                   ${
                     index === 0
-                      ? "bg-primary text-primary-foreground border-amber-400 dark:border-amber-300 ring-2 ring-amber-400 dark:ring-amber-300"
+                      ? "bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-amber-200 dark:border-amber-800 ring-1 ring-amber-200 dark:ring-amber-800"
                       : "bg-card"
                   }
                 `}
@@ -91,7 +91,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   <span
                     className={`
                       text-3xl font-bold
-                      ${index === 0 ? "text-amber-400 dark:text-amber-300" : "text-primary"}
+                      ${index === 0 ? "text-amber-600 dark:text-amber-400" : "text-primary"}
                     `}
                   >
                     #{index + 1}
@@ -99,7 +99,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   <Avatar
                     className={`
                       h-16 w-16 border-2
-                      ${index === 0 ? "border-amber-400 dark:border-amber-300" : "border-primary/50"}
+                      ${index === 0 ? "border-amber-300 dark:border-amber-600" : "border-primary/50"}
                     `}
                   >
                     {fundraiser.avatarUrl && (
@@ -113,7 +113,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                         text-2xl
                         ${
                           index === 0
-                            ? "text-amber-500 bg-primary-foreground dark:text-amber-400 dark:bg-primary-foreground"
+                            ? "text-amber-700 bg-amber-50 dark:text-amber-300 dark:bg-amber-950"
                             : ""
                         }
                       `}
@@ -139,7 +139,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   <div
                     className={`
                       text-sm mb-1
-                      ${index === 0 ? "text-primary-foreground/80 dark:text-primary-foreground/80" : "text-muted-foreground"}
+                      ${index === 0 ? "text-slate-700 dark:text-slate-300" : "text-muted-foreground"}
                     `}
                   >
                     Raised{" "}
@@ -164,7 +164,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                       w-full h-3 mb-2
                       ${
                         index === 0
-                          ? "bg-primary-foreground/20 [&>div]:bg-amber-400 dark:bg-primary-foreground/20 dark:[&>div]:bg-amber-500"
+                          ? "bg-amber-100 [&>div]:bg-amber-500 dark:bg-amber-900/30 dark:[&>div]:bg-amber-400"
                           : ""
                       }
                     `}
@@ -172,7 +172,7 @@ export const TopFundraisers: React.FC<TopFundraisersProps> = ({
                   <div
                     className={`
                       text-xs text-right
-                      ${index === 0 ? "text-primary-foreground/70 dark:text-primary-foreground/70" : "text-muted-foreground"}
+                      ${index === 0 ? "text-slate-600 dark:text-slate-400" : "text-muted-foreground"}
                     `}
                   >
                     {percentage.toFixed(0)}%
