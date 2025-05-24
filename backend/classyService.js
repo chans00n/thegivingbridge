@@ -151,11 +151,15 @@ async function getOrganizationById(organizationId, queryParams = "") {
 // Get top fundraisers for a campaign
 async function getClassyCampaignTopFundraisers(campaignId, queryParams = "") {
   if (!campaignId) throw new Error("Campaign ID is required.");
-  // Removed sort parameter to avoid Classy API error, will get default sort (likely by creation date or ID)
-  // We can sort on the client-side or add more sophisticated backend sorting later if needed.
+  // Try to get fundraising pages with additional data using 'with' parameter
+  const withParams = "with=overview,aggregates";
+  const finalParams = queryParams
+    ? `${queryParams}&${withParams}&per_page=5`
+    : `${withParams}&per_page=5`;
+
   return makeClassyGetRequest(
     `/campaigns/${campaignId}/fundraising-pages`,
-    queryParams + (queryParams ? "&" : "") + "per_page=5",
+    finalParams,
   );
 }
 

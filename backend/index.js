@@ -348,64 +348,57 @@ app.get(
               );
             }
 
-            // Get the fundraiser name from member info or fallback
-            const fundraiserName = page.member
-              ? `${page.member.first_name || ""} ${page.member.last_name || ""}`.trim() ||
-                page.member.email_address
-              : page.alias || `Fundraiser ${index + 1}`;
+            // Get the fundraiser name - use title or alias
+            const fundraiserName =
+              page.title || page.alias || `Fundraiser ${index + 1}`;
 
-            // Try multiple amount fields with detailed logging
-            const amount_raised_cents = page.amount_raised || 0;
-            const amount_raised_dollars = amount_raised_cents / 100;
-            const donation_gross = page.donation_gross_amount || 0;
-            const total_gross = page.total_gross_amount || 0;
-            const net_amount = page.net_amount || 0;
-            const progress_bar_amount = page.progress_bar_amount || 0;
-            const hard_credits = page.hard_credits_amount || 0;
-            const soft_credits = page.soft_credits_amount || 0;
+            // Try to get raised amount from potential overview/aggregate data
+            let raisedAmount = 0;
 
-            // Try multiple goal fields
-            const goal_cents = page.goal || 0;
-            const goal_dollars = goal_cents / 100;
-            const goal_amount = page.goal_amount || 0;
-            const target_amount = page.target_amount || 0;
+            // Check for various possible amount fields that might be included with 'with=overview,aggregates'
+            if (page.overview && page.overview.raised_amount) {
+              raisedAmount = page.overview.raised_amount;
+              console.log(`  Found overview.raised_amount: ${raisedAmount}`);
+            } else if (page.aggregates && page.aggregates.raised_amount) {
+              raisedAmount = page.aggregates.raised_amount;
+              console.log(`  Found aggregates.raised_amount: ${raisedAmount}`);
+            } else if (page.amount_raised) {
+              raisedAmount = page.amount_raised / 100; // Convert from cents if present
+              console.log(
+                `  Found amount_raised: ${page.amount_raised} cents = $${raisedAmount}`,
+              );
+            } else if (page.total_raised) {
+              raisedAmount = page.total_raised;
+              console.log(`  Found total_raised: ${raisedAmount}`);
+            }
+
+            // For goals: the 'goal' field appears to already be in dollars, not cents
+            const goalAmount = page.goal || 0; // Don't divide by 100 - already in dollars
 
             console.log(`Fundraiser ${page.id}:`);
+            console.log(`  Name: ${fundraiserName}`);
             console.log(
-              `  Amount fields: amount_raised=${amount_raised_cents} (=$${amount_raised_dollars}), donation_gross=${donation_gross}, total_gross=${total_gross}, net_amount=${net_amount}, progress_bar_amount=${progress_bar_amount}, hard_credits=${hard_credits}, soft_credits=${soft_credits}`,
+              `  Goal from API: ${page.goal} (keeping as dollars = $${goalAmount})`,
             );
-            console.log(
-              `  Goal fields: goal=${goal_cents} (=$${goal_dollars}), goal_amount=${goal_amount}, target_amount=${target_amount}`,
-            );
-
-            // Use the first non-zero amount we find
-            const raisedAmount =
-              amount_raised_dollars ||
-              donation_gross ||
-              total_gross ||
-              net_amount ||
-              progress_bar_amount ||
-              hard_credits ||
-              soft_credits ||
-              0;
-            const goalAmount =
-              goal_dollars || goal_amount || target_amount || 0;
-
-            console.log(
-              `  Final values: raised=$${raisedAmount}, goal=$${goalAmount}`,
-            );
+            console.log(`  Raw goal: ${page.raw_goal}`);
+            console.log(`  Raised amount: $${raisedAmount}`);
 
             return {
               id: page.id,
               name: fundraiserName,
-              raisedAmount: raisedAmount, // Match the interface field name
-              goalAmount: goalAmount, // Match the interface field name
-              pagePath: page.canonical_url || `/fundraising-pages/${page.id}`, // Provide the page path
-              avatarUrl: null, // Classy API doesn't provide avatar URLs
+              raisedAmount: raisedAmount,
+              goalAmount: goalAmount,
+              pagePath: page.canonical_url || `/fundraising-pages/${page.id}`,
+              avatarUrl: page.logo_url || null,
             };
           })
-          // Sort by amount raised in descending order
-          .sort((a, b) => b.raisedAmount - a.raisedAmount);
+          // Sort by raised amount first, then by goal amount as fallback
+          .sort((a, b) => {
+            if (b.raisedAmount !== a.raisedAmount) {
+              return b.raisedAmount - a.raisedAmount;
+            }
+            return b.goalAmount - a.goalAmount;
+          });
       }
 
       console.log("Processed fundraisers count:", processedFundraisers.length);
