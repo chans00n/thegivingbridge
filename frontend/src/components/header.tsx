@@ -18,7 +18,9 @@ export const Header = () => {
   const appName = process.env.NEXT_PUBLIC_APP_NAME || "FundRaiser";
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [logoSrc, setLogoSrc] = useState("/images/tgb-logo-light.png");
+  const [logoSrc, setLogoSrc] = useState(
+    "/images/ThePhoenixLogo_Horiz_SOLID_RGB.png",
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -28,8 +30,8 @@ export const Header = () => {
     if (mounted) {
       setLogoSrc(
         resolvedTheme === "dark"
-          ? "/images/tgb-logo-dark.png"
-          : "/images/tgb-logo-light.png",
+          ? "/images/ThePhoenixLogo_Horiz_RGB WHITE.png"
+          : "/images/ThePhoenixLogo_Horiz_SOLID_RGB.png",
       );
     }
   }, [resolvedTheme, mounted]);
