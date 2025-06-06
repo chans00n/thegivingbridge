@@ -1,5 +1,5 @@
 import { Calendar, MapPin, Clock, Heart, Users, Trophy } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const EventDetails = () => {
   const highlights = [
@@ -118,7 +118,7 @@ export const EventDetails = () => {
             </div>
             <div>
               <h4 className="font-semibold text-lg mb-3 text-neutral-900 dark:text-white">
-                What's Included
+                What&apos;s Included
               </h4>
               <ul className="space-y-2 text-neutral-600 dark:text-neutral-300">
                 <li>• Welcome breakfast and lunch</li>
