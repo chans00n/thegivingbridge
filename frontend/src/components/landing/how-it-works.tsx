@@ -5,6 +5,7 @@ import {
   Gift,
   Award,
   ArrowRight,
+  Circle,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -43,7 +44,7 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-16 bg-neutral-50 dark:bg-neutral-900">
+    <section className="py-16 bg-white dark:bg-neutral-800">
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center mb-12">
@@ -61,16 +62,16 @@ export const HowItWorks = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {steps.map((step, index) => (
               <div key={index} className="relative">
-                <Card className="h-full hover:shadow-lg transition-shadow">
+                <Card className="h-full hover:shadow-lg transition-shadow border border-neutral-200 dark:border-neutral-700">
                   <CardContent className="p-6 text-center">
                     {/* Step number */}
-                    <div className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-4 mx-auto">
+                    <div className="bg-neutral-900 dark:bg-neutral-700 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mb-4 mx-auto">
                       {index + 1}
                     </div>
 
                     {/* Icon */}
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                      <step.icon className="w-8 h-8 text-blue-500" />
+                    <div className="bg-neutral-100 dark:bg-neutral-800 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <step.icon className="w-8 h-8 text-[#E2241A]" />
                     </div>
 
                     {/* Title */}
@@ -93,7 +94,7 @@ export const HowItWorks = () => {
                 {/* Arrow for larger screens */}
                 {index < steps.length - 1 && (
                   <div className="hidden xl:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                    <ArrowRight className="w-6 h-6 text-blue-500" />
+                    <ArrowRight className="w-6 h-6 text-neutral-400" />
                   </div>
                 )}
               </div>
@@ -102,31 +103,55 @@ export const HowItWorks = () => {
         </div>
 
         {/* Additional info */}
-        <div className="mt-16 bg-white dark:bg-neutral-800 rounded-lg p-8 max-w-4xl mx-auto">
+        <div className="mt-16 bg-neutral-50 dark:bg-neutral-900 rounded-xl p-8 max-w-4xl mx-auto border border-neutral-200 dark:border-neutral-700">
           <h3 className="text-2xl font-bold text-center text-neutral-900 dark:text-white mb-6">
             Multiple Ways to Participate
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h4 className="font-semibold text-lg mb-3 text-neutral-900 dark:text-white">
+              <h4 className="font-semibold text-lg mb-4 text-neutral-900 dark:text-white">
                 Individual Participation
               </h4>
-              <ul className="space-y-2 text-neutral-600 dark:text-neutral-300">
-                <li>• Set personal fundraising goals</li>
-                <li>• Participate in solo challenges</li>
-                <li>• Share your story and motivation</li>
-                <li>• Connect with other participants</li>
+              <ul className="space-y-3 text-neutral-600 dark:text-neutral-300">
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Set personal fundraising goals
+                </li>
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Participate in solo challenges
+                </li>
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Share your story and motivation
+                </li>
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Connect with other participants
+                </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-lg mb-3 text-neutral-900 dark:text-white">
+              <h4 className="font-semibold text-lg mb-4 text-neutral-900 dark:text-white">
                 Team Participation
               </h4>
-              <ul className="space-y-2 text-neutral-600 dark:text-neutral-300">
-                <li>• Form or join fundraising teams</li>
-                <li>• Collaborate on team challenges</li>
-                <li>• Compete for team recognition</li>
-                <li>• Build lasting community connections</li>
+              <ul className="space-y-3 text-neutral-600 dark:text-neutral-300">
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Form or join fundraising teams
+                </li>
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Collaborate on team challenges
+                </li>
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Compete for team recognition
+                </li>
+                <li className="flex items-start gap-2">
+                  <Circle className="w-4 h-4 text-[#E2241A] mt-1 flex-shrink-0 fill-current" />
+                  Build lasting community connections
+                </li>
               </ul>
             </div>
           </div>

@@ -3,18 +3,16 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, Target, ArrowDown } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 interface HeroSectionProps {
   eventDate?: string; // Optional event date for countdown
-  currentParticipants?: number;
   fundraisingGoal?: number;
   currentlyRaised?: number;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  eventDate = "2024-09-30", // Default September 30th
-  currentParticipants = 47,
+  eventDate = "2025-09-01", // September 1st - start of campaign
   fundraisingGoal = 50000,
   currentlyRaised = 12500,
 }) => {
@@ -36,6 +34,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60),
         });
+      } else {
+        // If the date has passed, show zeros
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+        });
       }
     };
 
@@ -48,7 +54,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const progressPercentage = (currentlyRaised / fundraisingGoal) * 100;
 
   const scrollToDetails = () => {
-    const detailsSection = document.getElementById("build-raise-cross");
+    const detailsSection = document.getElementById("how-it-works");
     detailsSection?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -63,7 +69,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/20 via-transparent to-neutral-900/30"></div>
 
       {/* Content container */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center p-8 max-w-4xl mx-auto">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center p-8 max-w-5xl mx-auto">
         {/* Main headline */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-lg">
           The Giving Bridge Challenge
@@ -96,58 +102,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           cross the bridge to celebration this September.
         </p>
 
-        {/* Stats cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 w-full max-w-2xl">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
-            <Users className="w-6 h-6 text-white mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">
-              {currentParticipants}
-            </div>
-            <div className="text-sm text-white/80">Bridge Builders</div>
-          </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
-            <Target className="w-6 h-6 text-white mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">
-              ${currentlyRaised.toLocaleString()}
-            </div>
-            <div className="text-sm text-white/80">Raised So Far</div>
-          </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
-            <Calendar className="w-6 h-6 text-white mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">{timeLeft.days}</div>
-            <div className="text-sm text-white/80">Days to Cross</div>
-          </div>
-        </div>
-
-        {/* Countdown timer */}
-        <div className="bg-white/15 backdrop-blur-sm rounded-xl p-6 mb-8 max-w-lg border border-white/30">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            Challenge Countdown
+        {/* Compact countdown timer */}
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-8 max-w-2xl w-full border border-white/20">
+          <h3 className="text-lg font-semibold text-white mb-3 text-center">
+            Challenge Starts In
           </h3>
-          <div className="grid grid-cols-4 gap-4 text-center">
-            <div>
+          <div className="flex justify-center gap-6 md:gap-8">
+            <div className="text-center">
               <div className="text-2xl font-bold text-white">
-                {timeLeft.days}
+                {timeLeft.days.toString().padStart(2, "0")}
               </div>
-              <div className="text-xs text-white/80">Days</div>
+              <div className="text-xs text-white/80">DAYS</div>
             </div>
-            <div>
+            <div className="text-white/60 self-center">:</div>
+            <div className="text-center">
               <div className="text-2xl font-bold text-white">
-                {timeLeft.hours}
+                {timeLeft.hours.toString().padStart(2, "0")}
               </div>
-              <div className="text-xs text-white/80">Hours</div>
+              <div className="text-xs text-white/80">HRS</div>
             </div>
-            <div>
+            <div className="text-white/60 self-center">:</div>
+            <div className="text-center">
               <div className="text-2xl font-bold text-white">
-                {timeLeft.minutes}
+                {timeLeft.minutes.toString().padStart(2, "0")}
               </div>
-              <div className="text-xs text-white/80">Min</div>
+              <div className="text-xs text-white/80">MIN</div>
             </div>
-            <div>
+            <div className="text-white/60 self-center">:</div>
+            <div className="text-center">
               <div className="text-2xl font-bold text-white">
-                {timeLeft.seconds}
+                {timeLeft.seconds.toString().padStart(2, "0")}
               </div>
-              <div className="text-xs text-white/80">Sec</div>
+              <div className="text-xs text-white/80">SEC</div>
             </div>
           </div>
         </div>

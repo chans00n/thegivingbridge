@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowRight, Users } from "lucide-react";
+import { Circle, ArrowRight, Users } from "lucide-react";
 
 export const CTAFooter = () => {
   return (
@@ -16,11 +16,9 @@ export const CTAFooter = () => {
         <div className="text-center">
           {/* Header */}
           <div className="flex justify-center items-center gap-3 mb-6">
-            <Heart className="w-8 h-8 text-[#E2241A] fill-current" />
             <h2 className="text-4xl md:text-5xl font-bold text-white">
               Cross the Bridge to Recovery
             </h2>
-            <Heart className="w-8 h-8 text-[#E2241A] fill-current" />
           </div>
 
           {/* Main message */}
@@ -39,7 +37,7 @@ export const CTAFooter = () => {
                 Registration closes September 25th!
               </span>
               <br />
-              Don't miss your chance to be part of this movement.
+              Don&apos;t miss your chance to be part of this movement.
             </p>
           </div>
 
@@ -76,7 +74,7 @@ export const CTAFooter = () => {
                 <span className="text-sm">Recovery Support Organizations</span>
               </div>
               <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4" />
+                <Circle className="w-4 h-4 fill-current" />
                 <span className="text-sm">Mental Health Advocates</span>
               </div>
               <div className="flex items-center gap-2">
