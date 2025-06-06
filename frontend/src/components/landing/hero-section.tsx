@@ -98,8 +98,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* Subtitle */}
         <p className="text-lg sm:text-xl lg:text-2xl text-white/90 mb-8 drop-shadow-md max-w-2xl">
-          Build your fundraising page, raise funds for recovery programs, and
-          cross the bridge to celebration this September.
+          <span className="underline">Build</span> your fundraising page,{" "}
+          <span className="underline">raise</span> funds for The Phoenix, and{" "}
+          <span className="underline">cross</span> your bridge for recovery this
+          September.
         </p>
 
         {/* Compact countdown timer */}
